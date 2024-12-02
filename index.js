@@ -1,5 +1,5 @@
-// const redirect_uri = "https://chyujh.github.io/Line-logIn/";
-const redirect_uri = "http://127.0.0.1:5500/";
+const redirect_uri = "https://chyujh.github.io/Line-logIn/";
+// const redirect_uri = "http://127.0.0.1:5500/";
 const client_id = "2006626177";
 const client_secret = "2d6aa4a6453fa79f44cec2d821918542";
 const queryObject = {};
