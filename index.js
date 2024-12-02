@@ -24,7 +24,7 @@ function init() {
   console.log(myURL);
   // 透過物件的解構賦值，取出 URL 物件的屬性值
   const { searchParams } = myURL;
-
+  console.log(searchParams);
   // 透過陣列的解構賦值，取得網址參數部分
   for (let [key, value] of searchParams.entries()) {
     queryObject[key] = value;
