@@ -1,5 +1,5 @@
 // const redirect_uri = "https://chyujh.github.io/Line-logIn/";
-const redirect_uri = "https://chyujh.github.io/Line-logIn/";
+const redirect_uri = "http://127.0.0.1:5500/";
 const client_id = "2006626177";
 const client_secret = "2d6aa4a6453fa79f44cec2d821918542";
 const queryObject = {};
@@ -21,18 +21,19 @@ function loginToLine() {
 function init() {
   // 解析是否是line跳轉過來的
   const myURL = new URL(window.location.href);
-  console.log(myURL);
+
   // 透過物件的解構賦值，取出 URL 物件的屬性值
   const { searchParams } = myURL;
-  console.log(searchParams);
-  // 透過陣列的解構賦值，取得網址參數部分
+
+  // 透過陣列的解構賦值，取得網址參數部分(code=lfcJqyvcdr6WQvTSV4Mg&state=login)
   for (let [key, value] of searchParams.entries()) {
     queryObject[key] = value;
   }
   console.log(queryObject);
 }
-
+let tokenInfo = {};
 // POST https://api.line.me/oauth2/v2.1/token
+//https://developers.line.biz/en/reference/line-login/#issue-access-token 官網文件
 async function getLineToken() {
   // 留意一下官網告知的傳送格式，是使用 application/x-www-form-urlencoded
   const url = "https://api.line.me/oauth2/v2.1/token";
@@ -47,8 +48,9 @@ async function getLineToken() {
     client_id, //Channel ID
     client_secret, //Channel secret
   });
+
   const response = await postApi(url, headers, body);
-  console.log(response);
+  tokenInfo = response;
 
   function postApi(url, headers, body) {
     return fetch(url, {
@@ -68,5 +70,24 @@ async function getLineToken() {
             "token_type": "Bearer"
             }         
         */
+  }
+}
+
+//https://api.line.me/v2/profile
+async function getUserInfo() {
+  console.log(tokenInfo.access_token);
+  const response = await getApi(
+    "https://api.line.me/v2/profile",
+    tokenInfo.access_token
+  );
+  console.log(response);
+  function getApi(url, token) {
+    console.log(token);
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => response.json());
   }
 }
