@@ -51,7 +51,7 @@ async function getLineToken() {
 
   const response = await postApi(url, headers, body);
   tokenInfo = response;
-
+  console.log(tokenInfo);
   function postApi(url, headers, body) {
     return fetch(url, {
       method: "POST",
@@ -75,14 +75,12 @@ async function getLineToken() {
 
 //https://api.line.me/v2/profile
 async function getUserInfo() {
-  console.log(tokenInfo.access_token);
   const response = await getApi(
     "https://api.line.me/v2/profile",
     tokenInfo.access_token
   );
   console.log(response);
   function getApi(url, token) {
-    console.log(token);
     return fetch(url, {
       method: "GET",
       headers: {
